@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import {getstate} from "./Action";
+import {connect} from "react-redux";
+import SearchIcon from '@material-ui/icons/Search';
+import Map from "./Map";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state={
+    name:""
+  }
+  func=(event)=>{
+
+  this.setState({
+    name:event.target.value
+  })
+  }
+
+  handleclick=()=>{
+
+    this.props.dispatch(getstate(this.state.name));
+  }
+    render() {
+        return (
+           
+                 <div >
+            <div >
+              <SearchIcon />
+
+            </div>
+            <InputBase
+            onChange={this.func}
+              placeholder="Search…"
+             
+              inputProps={{ 'aria-label': 'search' }}
+            />
+            <button onClick={this.handleclick}>search</button>
+            <Map/>
+            </div>
+        );
+    }
 }
 
-export default App;
+
+function mapStateToProps(state) {
+  return { initialdetails:state.initialdetails};
+}
+export default connect(mapStateToProps)(App);
